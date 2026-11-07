@@ -1,0 +1,249 @@
+INSTALLATIEHANDLEIDING - LEGO STORAGE SYSTEM IN GITHUB CODESPACES
+Voor beginners
+
+In deze handleiding maak je een online ontwikkelomgeving aan en start je het
+Lego Storage System. Volg de stappen in volgorde. Kopieer opdrachten uit de
+handleiding naar de terminal van je Codespace.
+
+WAT GA JE DOEN?
+
+- Je opent de GitHub-pagina van het project. Een repository (vaak "repo"
+  genoemd) is de projectmap met de bestanden en de versiegeschiedenis.
+- Je maakt een Codespace aan. Dat is een online computer met een editor en
+  terminal waarop je het project kunt uitvoeren.
+- Je installeert Java, Maven en MariaDB. MariaDB bewaart de gebruikersgegevens.
+- Je start de applicatie in de terminal. Dit programma heeft tekstmenu's; het
+  is geen website.
+
+VOORDAT JE BEGINT
+
+- Je hebt een GitHub-account nodig en moet toegang hebben tot de repository
+  van Lego Storage System. Als je de projectpagina niet kunt openen, vraag dan
+  de eigenaar om toegang.
+- GitHub kan limieten of kosten voor Codespaces hanteren. Controleer zo nodig
+  je Codespaces-gebruik en factureringsinstellingen in GitHub.
+- Je hoeft Git of GitHub niet via opdrachten te gebruiken om deze handleiding
+  te volgen.
+- Een Codespace is een ontwikkelomgeving, geen permanente server. Verwijder
+  hem niet voordat je gegevens die je wilt bewaren veilig hebt gekopieerd.
+
+1. OPEN HET PROJECT EN MAAK EEN CODESPACE
+
+1. Meld je aan op https://github.com.
+2. Open de repositorypagina van Lego Storage System. Een repositorypagina
+   bevat onder andere de projectbestanden, zoals pom.xml en src.
+3. Klik op de groene knop Code.
+4. Kies het tabblad Codespaces.
+5. Klik op Create codespace on ... (de tekst achter "on" kan verschillen).
+   Als GitHub om een branch vraagt, kun je meestal de voorgeselecteerde branch
+   laten staan. Een branch is een aparte versie/werklijn van het project.
+6. Wacht tot de Codespace klaar is. Er opent een editor die lijkt op Visual
+   Studio Code. De eerste keer kan dit enkele minuten duren.
+
+Zie je geen optie Codespaces of kun je geen Codespace maken? Controleer of je
+de juiste repository hebt geopend en of je GitHub-account toegang heeft.
+
+2. OPEN DE TERMINAL EN GA NAAR DE PROJECTMAP
+
+Een terminal is een venster waarin je opdrachten typt. Open er een via het
+menu Terminal > New Terminal. In de browser kan de terminal al onderaan in
+het venster staan.
+
+Typ of plak deze opdracht en druk op Enter:
+
+    cd /workspaces/LegoStorageSystem
+
+Met cd ga je naar de projectmap. Controleer daarna dat je op de juiste plek
+bent:
+
+    pwd
+    ls
+
+Bij pwd hoort een pad te staan dat eindigt op LegoStorageSystem. In de lijst
+van ls horen onder andere pom.xml en src te staan. Zie je die niet, controleer
+dan of de Codespace helemaal is opgestart en of je de juiste repository hebt
+geopend.
+
+TIP VOOR OPDRACHTEN
+
+- Plak de opdracht zelf, zonder de spaties ervoor.
+- Druk op Enter om de opdracht uit te voeren.
+- Wacht tot de opdracht klaar is voordat je de volgende uitvoert.
+- Een opdracht die niets terugmeldt, kan toch geslaagd zijn. Bij twijfel kun
+  je de controleopdracht uit de stap uitvoeren.
+- Als je een foutmelding krijgt, kopieer dan de volledige melding; die helpt
+  om het probleem te vinden.
+
+3. CONTROLEER JAVA EN MAVEN
+
+Java voert het programma uit. Maven bouwt het project en haalt benodigde
+projectbibliotheken op. Het project vereist Java 25 of hoger.
+
+Controleer wat al is geïnstalleerd:
+
+    java -version
+    mvn -version
+
+Als bij java een versie lager dan 25 staat, volg dan de Java-installatie
+hieronder. Als je de melding "command not found" krijgt bij mvn, installeer
+dan Maven met:
+
+    sudo apt update
+    sudo apt install -y maven
+
+Als Java ontbreekt of lager is dan versie 25, installeer Temurin 25 met deze
+opdrachten. Voer ze een voor een uit. Wanneer sudo om een wachtwoord vraagt,
+probeer dan eerst op Enter te drukken; Codespaces vraagt normaal gesproken
+geen wachtwoord voor sudo.
+
+    sudo apt install -y wget apt-transport-https gpg
+    sudo install -d -m 0755 /etc/apt/keyrings
+    wget -qO- https://packages.adoptium.net/artifactory/api/gpg/key/public | sudo tee /etc/apt/keyrings/adoptium.asc > /dev/null
+    . /etc/os-release
+    echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb ${VERSION_CODENAME} main" | sudo tee /etc/apt/sources.list.d/adoptium.list
+    sudo apt update
+    sudo apt install -y temurin-25-jdk
+
+Controleer Java en Maven opnieuw:
+
+    java -version
+    mvn -version
+
+De Java-versie moet 25 of hoger zijn. Als de opdrachten na installatie nog
+een oude versie tonen, open dan een nieuwe terminal via Terminal > New Terminal
+en controleer opnieuw.
+
+4. INSTALLEER EN START DE DATABASE
+
+MariaDB is het programma dat de gegevens opslaat. Installeer het met:
+
+    sudo apt install -y mariadb-server
+
+Start daarna MariaDB:
+
+    sudo service mariadb start
+
+Controleer de status:
+
+    sudo service mariadb status
+
+Als de status "active" of "running" aangeeft, draait MariaDB. Druk eventueel
+op q om het statusscherm te sluiten. Codespaces gebruikt doorgaans geen
+systemd; gebruik daarom de opdracht sudo service uit deze handleiding.
+
+MariaDB draait alleen binnen de Codespace. Je hoeft geen poort te openen of
+door te sturen.
+
+5. MAAK DE DATABASE EN TABEL AAN
+
+Zorg eerst dat de terminal in de projectmap staat (zie stap 2). Voer dan het
+projectschema uit:
+
+    sudo mariadb < src/main/resources/schema.sql
+
+Als de opdracht zonder foutmelding eindigt, zijn de database legoDB en de
+tabel users aangemaakt. Dit schema bevat nog geen gebruikersgegevens.
+
+6. MAAK EEN DATABASEGEBRUIKER AAN
+
+De applicatie meldt zich aan bij MariaDB met een aparte gebruikersnaam en
+wachtwoord. Maak die gebruiker aan door de MariaDB-opdrachtprompt te openen:
+
+    sudo mariadb --disable-history
+
+Je ziet nu een prompt die ongeveer zo begint:
+
+    MariaDB [(none)]>
+
+Voer de SQL-regels hieronder een voor een in. Vervang
+KIES_EEN_EIGEN_WACHTWOORD door een lang, uniek wachtwoord. Laat de enkele
+aanhalingstekens staan en gebruik in dit wachtwoord zelf geen apostrof (').
+Onthoud of bewaar dit wachtwoord veilig; je hebt het in stap 7 weer nodig.
+
+    CREATE USER 'lego_app'@'127.0.0.1' IDENTIFIED BY 'KIES_EEN_EIGEN_WACHTWOORD';
+    GRANT SELECT, INSERT ON legoDB.* TO 'lego_app'@'127.0.0.1';
+    EXIT;
+
+EXIT sluit de MariaDB-prompt. Je bent daarna weer terug in de gewone
+terminal.
+
+Krijg je de melding dat lego_app al bestaat? Gebruik dan in plaats daarvan
+deze regels. Vervang ook hier de voorbeeldtekst door hetzelfde wachtwoord dat
+je straks in stap 7 invult:
+
+    ALTER USER 'lego_app'@'127.0.0.1' IDENTIFIED BY 'KIES_EEN_EIGEN_WACHTWOORD';
+    GRANT SELECT, INSERT ON legoDB.* TO 'lego_app'@'127.0.0.1';
+    EXIT;
+
+De applicatie heeft alleen rechten nodig om gebruikers te bekijken en toe te
+voegen. Gebruik geen echt wachtwoord dat je elders gebruikt.
+
+7. STEL DE VERBINDING IN
+
+De applicatie moet weten met welke databasegebruiker zij moet inloggen. Voer
+de volgende regels in de gewone terminal uit (niet in de MariaDB-prompt):
+
+    export LEGO_DB_USER='lego_app'
+    read -rsp 'Databasewachtwoord: ' LEGO_DB_PASSWORD
+    echo
+    export LEGO_DB_PASSWORD
+
+Na de tweede regel verschijnt "Databasewachtwoord:". Typ het wachtwoord dat
+je in stap 6 hebt gekozen en druk op Enter. Het wachtwoord is tijdens het
+typen niet zichtbaar; dat is normaal.
+
+Deze instellingen gelden zolang deze terminal open is. Open je later een
+nieuwe terminal, voer deze drie regels dan opnieuw uit voordat je de
+applicatie start.
+
+8. START DE APPLICATIE
+
+Controleer dat je nog in /workspaces/LegoStorageSystem bent. Start het
+programma met:
+
+    mvn compile exec:java
+
+De eerste keer haalt Maven mogelijk bestanden van internet op. Dat kan even
+duren. Wacht totdat het menu verschijnt:
+
+    1. display_all_users
+    2. add_user
+    3. exit
+
+Typ het nummer van de gewenste optie en druk op Enter:
+
+- 1 toont de gebruikers die in de database staan.
+- 2 vraagt gegevens en voegt een gebruiker toe.
+- 3 sluit het programma af.
+
+Het programma blijft in de terminal draaien. Het is geen website; je hoeft
+daarom geen adres in een browser te openen of een poort door te sturen. Stop
+het programma indien nodig met Ctrl+C.
+
+9. LATER VERDER WERKEN
+
+Als je de Codespace stopt en later weer opent:
+
+1. Open de Codespace opnieuw vanuit GitHub.
+2. Open Terminal > New Terminal.
+3. Ga naar de projectmap met cd /workspaces/LegoStorageSystem.
+4. Start MariaDB opnieuw: sudo service mariadb start.
+5. Stel de databaseverbinding opnieuw in met de opdrachten uit stap 7.
+6. Start de applicatie met mvn compile exec:java.
+
+Een Codespace verwijderen is iets anders dan sluiten of stoppen. Verwijderen
+kan bestanden en de databasegegevens wissen. Maak daarom eerst een back-up
+als je gegevens wilt bewaren. Zet wachtwoorden en back-ups met persoonsgegevens
+nooit in Git of op de GitHub-repository.
+
+PROBLEMEN OPLOSSEN
+
+- "No such file or directory" bij het schema: ga naar de projectmap met
+  cd /workspaces/LegoStorageSystem en probeer de opdracht opnieuw.
+- "command not found" bij mvn: installeer Maven met de opdrachten in stap 3.
+- Java is lager dan versie 25: voer de installatieopdrachten in stap 3 uit.
+- "Access denied" of een fout bij het verbinden met de database: controleer
+  of MariaDB draait, of LEGO_DB_USER en LEGO_DB_PASSWORD goed zijn ingesteld
+  en of het wachtwoord gelijk is aan het wachtwoord uit stap 6.
+- Het menu start niet: lees de volledige foutmelding in de terminal. Controleer
+  ook of je de opdrachten vanuit de projectmap uitvoert.

@@ -1,0 +1,28 @@
+Ik ben een java ontwikkelaar en wil een opslagsysteem maken voor lego blokjes.
+
+Hiervoor heb ik een mysql database nodig genaamd legoDB.
+In de database zit een tabel users met daarin de volgende kolommen:
+- userID
+- first_name
+- last_name
+- address
+- address_nr
+- postal_code
+- city
+- country
+- telefoonnr
+- email_address
+
+aan het begin wil ik een java class hebben met de volgende methodes.
+- init_connectie 
+- display_all_users
+- add_user
+
+vanuit de main class wordt er een menu getooond met daarin de opties.
+- display_all_users
+- add_user
+- exit
+
+Als je gebruikersnamen en wachtwoorden nodig hebt vraag daar dan om.
+Voeg bij iedere stap commentaar toe
+

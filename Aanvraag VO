@@ -1,0 +1,35 @@
+	1. Doel (Intent)
+Ik ben een java ontwikkelaar en wil graag een voorraad systeem hebben voor lego blokjes.
+
+Als lego fan heb ik heel veel verschillende lego blokjes opgeborgen in verschillende lades.
+Nu wil ik van ieder blokje bij kunnen houden wat het is en hoeveel ik er heb.
+Per blokje wil ik vast leggen:
+- Partnummer (Verplicht)
+- Kleur
+- Naam (Verplicht)
+- Omschrijving
+- Aantal (Verplicht)
+- Opmerking
+- Prijs
+
+Om te beginnen wil ik op de website die 2 menu opties heeft.
+1. Het toevoegen van een nieuw legoblokje
+2. Het weergeven van alle blokjes in de voorraad
+
+	2. Context 
+Gebruik voor de webserver een lightweight HTTP server met PHP. 
+Gebruik voor de het opslaan van de data een mysql server.
+De programmeer taal is JAVA OO
+Voeg in het programma commentaar toe.
+
+	3. Doelgroep
+Het resultaat is een website die ik kan gebruiken om mijn voorraad bij te houden.
+
+	4. Formaat (Output)
+De voorraad wordt getoond in een tabel op de website.
+
+	5. Randvoorwaarden (constraints)
+Als dingen niet duidelijk zijn vraag ze dan doe geen aannames.
+Voor usernamen en wachtwoorden wordt er een apart bestand aangemaakt.
+Voor variabelen van de webserver wordt er een apart bestand aangemaakt.
+Voor variabelen van de database wordt er een apart bestand aangemaakt.
